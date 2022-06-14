@@ -1,10 +1,13 @@
-import './App.css';
-import { MainPage } from './pages/MainPage';
+import "./App.css";
+import { AdminProvider } from "./context/admin";
+import { MainPage } from "./pages/MainPage";
 
 function App() {
   return (
     <div className="App">
-     <MainPage/>
+      <AdminProvider>
+        <MainPage />
+      </AdminProvider>
     </div>
   );
 }

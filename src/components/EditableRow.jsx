@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useAdmin } from "../context/admin";
 
-export function EditableRow({editData}) {
+export function EditableRow({ editData }) {
   const [editUser, setEditUser] = useState(editData);
+  const { dispatch } = useAdmin();
 
   const handleChange = e => {
     setEditUser({ ...editUser, [e.target.name]: e.target.value });
@@ -20,13 +22,11 @@ export function EditableRow({editData}) {
       <td className="table-inline-actions">
         <button
           onClick={() => {
-            // saveUser(editUser, editData.id, users, setUsers);
+            dispatch({ type: "EDIT_INLINE", payload: { ...editData, ...editUser } });
           }}>
           save
         </button>
-        <button 
-        // onClick={() => cancelEditUser(users, editUser.id, setUsers)}
-        >cancel</button>
+        <button onClick={() => dispatch({ type: "CANCEL_EDIT", payload: editData.id })}>cancel</button>
       </td>
     </>
   );

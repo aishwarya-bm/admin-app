@@ -1,7 +1,9 @@
-import React from "react";
+import { useAdmin } from "../context/admin";
 import { EditableRow } from "./EditableRow";
 import { ReadOnlyRow } from "./ReadOnlyRow";
-export function Table({ users }) {
+export function Table() {
+  const { filteredUsers } = useAdmin();
+
   return (
     <section className="table-container">
       <table>
@@ -22,15 +24,15 @@ export function Table({ users }) {
           </tr>
         </thead>
         <tbody>
-          {users &&
-            users?.map((user, idx) => {
+          {filteredUsers &&
+            filteredUsers?.map((user, idx) => {
               return (
                 <tr key={idx}>
                   <td>
                     <input
                       type="checkbox"
                       defaultValue={user.isSelected}
-                    //   checked={user.isSelected}
+                      //   checked={user.isSelected}
                       onChange={() => {}}
                     />
                   </td>

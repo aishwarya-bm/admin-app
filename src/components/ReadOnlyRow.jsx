@@ -1,5 +1,8 @@
+import { useAdmin } from "../context/admin";
+
 export function ReadOnlyRow({ currentUser }) {
   const { id, name, email, role } = currentUser;
+  const { dispatch } = useAdmin();
   return (
     <>
       <td>{name}</td>
@@ -8,15 +11,11 @@ export function ReadOnlyRow({ currentUser }) {
       <td className="table-inline-actions">
         <button
           onClick={() => {
-            // editUser(users, id, setUsers);
+            dispatch({ type: "SET_EDITABLE", payload: id });
           }}>
           edit
         </button>
-        <button
-        //  onClick={() => deleteUser(users, id, setUsers)}
-        >
-          delete
-        </button>
+        <button onClick={() => dispatch({ type: "DELETE_INLINE", payload: id })}>delete</button>
       </td>
     </>
   );
