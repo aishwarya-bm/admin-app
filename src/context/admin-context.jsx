@@ -1,6 +1,7 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { ROWS_PER_PAGE } from "../constants/pagination";
+import { filterBySearch } from "../utils/admin-util";
 import { adminReducer } from "./admin-reducer";
 
 const AdminContext = createContext();
@@ -24,25 +25,10 @@ const AdminProvider = ({ children }) => {
       console.log("Some error occured");
     }
   };
-
+  state.searchedUsers = filterBySearch(state);
   useEffect(() => {
     getAdminData();
   }, []);
-
-  const filterBySearch = () => {
-    return state.searchText === ""
-      ? state.users
-      : state.users.filter(
-          user =>
-            user.name.toLowerCase().includes(state.searchText.toLowerCase()) ||
-            user.email.toLowerCase().includes(state.searchText.toLowerCase()) ||
-            user.role.toLowerCase().includes(state.searchText.toLowerCase())
-        );
-  };
-
-
-  let filteredUsers = filterBySearch();
-  state.searchedUsers = filteredUsers;
 
   return <AdminContext.Provider value={{ state, dispatch }}>{children}</AdminContext.Provider>;
 };

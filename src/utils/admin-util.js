@@ -20,3 +20,14 @@ export const getDeleteButtonStatus = state => {
   const selected = state.searchText ? state.searchedUsers.slice(start, end) : state.users.slice(start, end);
   return !selected.some(user => user.isSelected);
 };
+
+export const filterBySearch = state => {
+  return state.searchText === ""
+    ? state.users
+    : state.users.filter(
+        user =>
+          user.name.toLowerCase().includes(state.searchText.toLowerCase()) ||
+          user.email.toLowerCase().includes(state.searchText.toLowerCase()) ||
+          user.role.toLowerCase().includes(state.searchText.toLowerCase())
+      );
+};

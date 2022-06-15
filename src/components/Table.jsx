@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAdmin } from "../context/admin-context";
 import { getAllSelected } from "../utils/admin-util";
 import { EditableRow } from "./EditableRow";
@@ -6,7 +5,7 @@ import { ReadOnlyRow } from "./ReadOnlyRow";
 export function Table() {
   const { state, dispatch } = useAdmin();
 
-  let u = state.searchedUsers?.slice(state.indexOfFirst - 1, state.indexOfLast);
+  let users = state.searchedUsers?.slice(state.indexOfFirst - 1, state.indexOfLast);
   return (
     <section className="table-container">
       <table>
@@ -29,14 +28,13 @@ export function Table() {
           </tr>
         </thead>
         <tbody>
-          {u &&
-            u?.map((user, idx) => {
+          {users &&
+            users?.map((user, idx) => {
               return (
                 <tr key={idx}>
                   <td>
                     <input
                       type="checkbox"
-                      // defaultValue={user.isSelected}
                       checked={user.isSelected}
                       onChange={e => {
                         dispatch({ type: "SELECT_ROW", payload: { checked: e.target.checked, id: user.id } });
