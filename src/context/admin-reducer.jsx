@@ -35,6 +35,14 @@ export const adminReducer = (state, action) => {
         ...state,
         users: state.users.filter(d => d.id !== payload),
       };
+
+    case "SET_CURRENTPAGE":
+      return {
+        ...state,
+        currentPage: payload.number,
+        indexOfFirst: payload.firstIndex,
+        indexOfLast: payload.lastIndex,
+      };
     default:
       return state;
   }

@@ -1,8 +1,11 @@
 import { useAdmin } from "../context/admin";
 import { EditableRow } from "./EditableRow";
 import { ReadOnlyRow } from "./ReadOnlyRow";
+import { useEffect } from "react";
 export function Table() {
-  const { filteredUsers } = useAdmin();
+  const {  state, dispatch } = useAdmin();
+
+  let u = state.searchedUsers?.slice(state.indexOfFirst - 1, state.indexOfLast);
 
   return (
     <section className="table-container">
@@ -24,8 +27,8 @@ export function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers &&
-            filteredUsers?.map((user, idx) => {
+          {u &&
+            u?.map((user, idx) => {
               return (
                 <tr key={idx}>
                   <td>

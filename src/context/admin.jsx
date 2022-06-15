@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { ROWS_PER_PAGE } from "../constants/pagination";
 import { adminReducer } from "./admin-reducer";
 
 const AdminContext = createContext();
@@ -8,6 +9,10 @@ const AdminProvider = ({ children }) => {
   const [state, dispatch] = useReducer(adminReducer, {
     users: [],
     searchText: "",
+    currentPage: 1,
+    indexOfFirst: 1,
+    indexOfLast: ROWS_PER_PAGE,
+    searchedUsers: [],
   });
   const getAdminData = async () => {
     try {
@@ -24,16 +29,22 @@ const AdminProvider = ({ children }) => {
     getAdminData();
   }, []);
 
-  const filterBySearch = searchText =>
-    [...state.users].filter(
-      user =>
-        user.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchText.toLowerCase()) ||
-        user.role.toLowerCase().includes(searchText.toLowerCase())
-    );
+  const filterBySearch = () => {
+    return state.searchText === ""
+      ? state.users
+      : state.users.filter(
+          user =>
+            user.name.toLowerCase().includes(state.searchText.toLowerCase()) ||
+            user.email.toLowerCase().includes(state.searchText.toLowerCase()) ||
+            user.role.toLowerCase().includes(state.searchText.toLowerCase())
+        );
+  };
 
-  const filteredUsers = filterBySearch(state.searchText);
-  return <AdminContext.Provider value={{ state, dispatch, filteredUsers }}>{children}</AdminContext.Provider>;
+
+  let filteredUsers = filterBySearch();
+  state.searchedUsers = filteredUsers;
+
+  return <AdminContext.Provider value={{ state, dispatch }}>{children}</AdminContext.Provider>;
 };
 
 const useAdmin = () => useContext(AdminContext);

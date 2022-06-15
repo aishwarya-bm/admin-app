@@ -30,7 +30,7 @@ tr {
   /* border-bottom: 1px solid; */
 }
 
-input[type="text"] {
+.actions-top input[type="text"] {
   padding: 8px;
   font-size: 1.2rem;
   width: 40%;
