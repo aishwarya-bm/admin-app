@@ -1,4 +1,4 @@
-import { useAdmin } from "../context/admin";
+import { useAdmin } from "../context/admin-context";
 
 export function ReadOnlyRow({ currentUser }) {
   const { id, name, email, role } = currentUser;

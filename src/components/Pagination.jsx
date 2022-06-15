@@ -1,7 +1,7 @@
 import { faAngleLeft, faAnglesLeft, faAngleRight, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROWS_PER_PAGE } from "../constants/pagination";
-import { useAdmin } from "../context/admin";
+import { useAdmin } from "../context/admin-context";
 export function Pagination() {
   const {
     dispatch,

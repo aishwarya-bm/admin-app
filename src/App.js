@@ -1,5 +1,5 @@
 import "./App.css";
-import { AdminProvider } from "./context/admin";
+import { AdminProvider } from "./context/admin-context";
 import { MainPage } from "./pages/MainPage";
 
 function App() {
