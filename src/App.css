@@ -1,3 +1,8 @@
+:root{
+  --primary-color: #3f51b5e3;
+  --primary-light: #5f6ebe36;
+}
+
 .App {
   text-align: center;
 }
@@ -27,7 +32,11 @@ th {
 
 tr {
   padding: 1rem;
-  /* border-bottom: 1px solid; */
+}
+
+.table-inline-actions {
+  display: flex;
+  gap: 1rem;
 }
 
 .actions-top input[type="text"] {
@@ -60,6 +69,18 @@ tr {
 }
 
 .current-pagenumber {
-  background-color: rgb(93, 193, 233);
-  color: black;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-icon {
+  background: transparent;
+  border: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+  color:var(--primary-color)
+}
+
+.row-selected{
+  background-color: var(--primary-light);
 }

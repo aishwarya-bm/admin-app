@@ -1,11 +1,11 @@
 import { useAdmin } from "../context/admin-context";
-import { getAllSelected } from "../utils/admin-util";
+import { filterBySearch, getAllSelected } from "../utils/admin-util";
 import { EditableRow } from "./EditableRow";
 import { ReadOnlyRow } from "./ReadOnlyRow";
 export function Table() {
   const { state, dispatch } = useAdmin();
 
-  let users = state.searchedUsers?.slice(state.indexOfFirst - 1, state.indexOfLast);
+   let users = filterBySearch(state).slice(state.indexOfFirst - 1, state.indexOfLast);
   return (
     <section className="table-container">
       <table>
@@ -31,7 +31,7 @@ export function Table() {
           {users &&
             users?.map((user, idx) => {
               return (
-                <tr key={idx}>
+                <tr key={idx} className={user.isSelected && "row-selected"} >
                   <td>
                     <input
                       type="checkbox"

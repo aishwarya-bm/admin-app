@@ -5,9 +5,9 @@ import { useAdmin } from "../context/admin-context";
 export function Pagination() {
   const {
     dispatch,
-    state: { currentPage, indexOfFirst, indexOfLast, searchedUsers },
+    state: { currentPage, indexOfFirst, indexOfLast, searchedUsers, searchText,users },
   } = useAdmin();
-  const totalUsers = searchedUsers?.length;
+  const totalUsers = searchText ? searchedUsers?.length : users?.length;
   const totalPages = Math.ceil(totalUsers / ROWS_PER_PAGE);
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useAdmin } from "../context/admin-context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+
 
 export function EditableRow({ editData }) {
   const [editUser, setEditUser] = useState(editData);
@@ -21,12 +24,15 @@ export function EditableRow({ editData }) {
       </td>
       <td className="table-inline-actions">
         <button
+          className="btn-icon"
           onClick={() => {
             dispatch({ type: "EDIT_INLINE", payload: { ...editData, ...editUser } });
           }}>
-          save
+          <FontAwesomeIcon icon={faCheck} />
         </button>
-        <button onClick={() => dispatch({ type: "CANCEL_EDIT", payload: editData.id })}>cancel</button>
+        <button className="btn-icon" onClick={() => dispatch({ type: "CANCEL_EDIT", payload: editData.id })}>
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
       </td>
     </>
   );

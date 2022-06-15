@@ -1,7 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { ROWS_PER_PAGE } from "../constants/pagination";
-import { filterBySearch } from "../utils/admin-util";
 import { adminReducer } from "./admin-reducer";
 
 const AdminContext = createContext();
@@ -25,7 +24,6 @@ const AdminProvider = ({ children }) => {
       console.log("Some error occured");
     }
   };
-  state.searchedUsers = filterBySearch(state);
   useEffect(() => {
     getAdminData();
   }, []);

@@ -5,11 +5,18 @@ export const adminReducer = (state, action) => {
       return {
         ...state,
         searchText: payload,
+        searchedUsers: state.users.filter(
+          user =>
+            user.name.toLowerCase().includes(payload.toLowerCase()) ||
+            user.email.toLowerCase().includes(payload.toLowerCase()) ||
+            user.role.toLowerCase().includes(payload.toLowerCase())
+        ),
       };
     case "SET_INITIAL_USERS_DATA":
       return {
         ...state,
         users: payload.map(d => ({ ...d, edit: false, isSelected: false })),
+        searchedUsers: state.users
       };
 
     case "SET_EDITABLE":
@@ -88,7 +95,7 @@ export const adminReducer = (state, action) => {
 
       return {
         ...state,
-        users: state.users.filter(user => (searchResultsCopy.find(s => s.id === user.id) ? false : true)),
+        users: state.users.filter(user => (searchResultsCopy.find(s => s.id === user.id && s.isSelected) ? false : true)),
         searchedUsers: state.searchedUsers.filter((u, idx) => !(idx >= start3 && idx <= end3 && u.isSelected)),
       };
     default:
