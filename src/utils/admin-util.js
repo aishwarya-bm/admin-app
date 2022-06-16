@@ -32,21 +32,64 @@ const filterBySearch = state => {
       );
 };
 
- const onSearchChange = (e, state, dispatch) => {
-   dispatch({ type: "SET_SEARCH", payload: e.target.value });
-   const lastIndex = state.users.length >= ROWS_PER_PAGE ? ROWS_PER_PAGE : state.users.length % ROWS_PER_PAGE;
-   dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex: 1, lastIndex } });
- };
+const onSearchChange = (e, state, dispatch) => {
+  dispatch({ type: "SET_SEARCH", payload: e.target.value });
+  const lastIndex = state.users.length >= ROWS_PER_PAGE ? ROWS_PER_PAGE : state.users.length % ROWS_PER_PAGE;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex: 1, lastIndex } });
+};
 
- const onClearSearch = (state, dispatch) => {
-   dispatch({ type: "SET_SEARCH", payload: "" });
-   const lastIndex = state.users.length >= ROWS_PER_PAGE ? ROWS_PER_PAGE : state.users.length % ROWS_PER_PAGE;
-   dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex: 1, lastIndex } });
- };
+const onClearSearch = (state, dispatch) => {
+  dispatch({ type: "SET_SEARCH", payload: "" });
+  const lastIndex = state.users.length >= ROWS_PER_PAGE ? ROWS_PER_PAGE : state.users.length % ROWS_PER_PAGE;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex: 1, lastIndex } });
+};
 
- const onDeleteBulk = (state, dispatch) => {
-   if (state.searchText) dispatch({ type: "DELETE_BULK_SEARCH" });
-   else dispatch({ type: "DELETE_BULK_ALL" });
- };
+const onDeleteBulk = (state, dispatch) => {
+  if (state.searchText) dispatch({ type: "DELETE_BULK_SEARCH" });
+  else dispatch({ type: "DELETE_BULK_ALL" });
+};
 
-export { filterBySearch, getAllSelected, getDeleteButtonStatus, setIndexes,onSearchChange,onClearSearch,onDeleteBulk };
+const setFirstPageIdx = (totalUsers, dispatch) => {
+  let lastIndex = ROWS_PER_PAGE <= totalUsers ? ROWS_PER_PAGE : totalUsers;
+  let firstIndex = 1;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex, lastIndex } });
+};
+
+const setPreviousPageIdx = (totalUsers, currentPage, indexOfFirst, dispatch) => {
+  let lastIndex = (currentPage - 1) * ROWS_PER_PAGE <= totalUsers ? (currentPage - 1) * ROWS_PER_PAGE : totalUsers;
+  let firstIndex = indexOfFirst - ROWS_PER_PAGE;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number: currentPage - 1, firstIndex, lastIndex } });
+};
+
+const setNextPageIdx = (totalUsers, state, dispatch) => {
+  let lastIndex = state.indexOfLast + ROWS_PER_PAGE <= totalUsers ? state.indexOfLast + ROWS_PER_PAGE : totalUsers;
+  let firstIndex = state.indexOfFirst + ROWS_PER_PAGE;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number: state.currentPage + 1, firstIndex, lastIndex } });
+};
+
+const setLastPageIdx = (totalPages, totalUsers, dispatch) => {
+  let lastIndex = totalPages * ROWS_PER_PAGE <= totalUsers ? totalPages * ROWS_PER_PAGE : totalUsers;
+  let firstIndex = (totalPages - 1) * ROWS_PER_PAGE + 1;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number: totalPages, firstIndex, lastIndex } });
+};
+
+const setSelectedPageIndex = (number,totalUsers, dispatch) =>{
+  let lastIndex = number * ROWS_PER_PAGE <= totalUsers ? number * ROWS_PER_PAGE : totalUsers;
+  let firstIndex = (number - 1) * ROWS_PER_PAGE + 1;
+  dispatch({ type: "SET_CURRENTPAGE", payload: { number, firstIndex, lastIndex } });
+}
+
+export {
+  filterBySearch,
+  getAllSelected,
+  getDeleteButtonStatus,
+  setIndexes,
+  onSearchChange,
+  onClearSearch,
+  onDeleteBulk,
+  setFirstPageIdx,
+  setLastPageIdx,
+  setNextPageIdx,
+  setPreviousPageIdx,
+  setSelectedPageIndex
+};

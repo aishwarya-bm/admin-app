@@ -2,11 +2,16 @@ import { faAngleLeft, faAnglesLeft, faAngleRight, faAnglesRight } from "@fortawe
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROWS_PER_PAGE } from "../constants/pagination";
 import { useAdmin } from "../context/admin-context";
+import {
+  setFirstPageIdx,
+  setLastPageIdx,
+  setNextPageIdx,
+  setPreviousPageIdx,
+  setSelectedPageIndex,
+} from "../utils/admin-util";
 export function Pagination() {
-  const {
-    dispatch,
-    state: { currentPage, indexOfFirst, indexOfLast, searchedUsers, searchText,users },
-  } = useAdmin();
+  const { dispatch, state } = useAdmin();
+  const { currentPage, indexOfFirst, searchedUsers, searchText, users } = state;
   const totalUsers = searchText ? searchedUsers?.length : users?.length;
   const totalPages = Math.ceil(totalUsers / ROWS_PER_PAGE);
   const pageNumbers = [];
@@ -18,9 +23,7 @@ export function Pagination() {
         className="page-number"
         disabled={currentPage === 1}
         onClick={() => {
-          let lastIndex = ROWS_PER_PAGE <= totalUsers ? ROWS_PER_PAGE : totalUsers;
-          let firstIndex =  1;
-          dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex, lastIndex } });
+          setFirstPageIdx(totalUsers, dispatch);
         }}>
         <FontAwesomeIcon icon={faAnglesLeft} />
       </button>
@@ -28,10 +31,7 @@ export function Pagination() {
         className="page-number"
         disabled={currentPage === 1}
         onClick={() => {
-          let lastIndex =
-            (currentPage - 1) * ROWS_PER_PAGE <= totalUsers ? (currentPage - 1) * ROWS_PER_PAGE : totalUsers;
-          let firstIndex = indexOfFirst - ROWS_PER_PAGE;
-          dispatch({ type: "SET_CURRENTPAGE", payload: { number: currentPage-1, firstIndex, lastIndex } });
+          setPreviousPageIdx(totalUsers, currentPage, indexOfFirst, dispatch);
         }}>
         <FontAwesomeIcon icon={faAngleLeft} />
       </button>
@@ -39,9 +39,7 @@ export function Pagination() {
         <button
           key={"page" + number}
           onClick={() => {
-            let lastIndex = number * ROWS_PER_PAGE <= totalUsers ? number * ROWS_PER_PAGE : totalUsers;
-            let firstIndex = (number - 1) * ROWS_PER_PAGE + 1;
-            dispatch({ type: "SET_CURRENTPAGE", payload: { number, firstIndex, lastIndex } });
+            setSelectedPageIndex(number, totalUsers, dispatch);
           }}
           className={number === currentPage ? "current-pagenumber" : "page-number"}>
           {number}
@@ -51,9 +49,7 @@ export function Pagination() {
         className="page-number"
         disabled={currentPage === totalPages}
         onClick={() => {
-          let lastIndex = indexOfLast + ROWS_PER_PAGE <= totalUsers ? indexOfLast + ROWS_PER_PAGE : totalUsers;
-          let firstIndex = indexOfFirst + ROWS_PER_PAGE;
-          dispatch({ type: "SET_CURRENTPAGE", payload: { number: currentPage + 1, firstIndex, lastIndex } });
+          setNextPageIdx(totalUsers, state, dispatch);
         }}>
         <FontAwesomeIcon icon={faAngleRight} />
       </button>
@@ -61,9 +57,7 @@ export function Pagination() {
         className="page-number"
         disabled={currentPage === totalPages}
         onClick={() => {
-          let lastIndex = totalPages * ROWS_PER_PAGE <= totalUsers ? totalPages * ROWS_PER_PAGE : totalUsers;
-          let firstIndex = (totalPages - 1) * ROWS_PER_PAGE + 1;
-          dispatch({ type: "SET_CURRENTPAGE", payload: { number:totalPages, firstIndex, lastIndex } });
+          setLastPageIdx(totalPages, totalUsers, dispatch);
         }}>
         <FontAwesomeIcon icon={faAnglesRight} />
       </button>
