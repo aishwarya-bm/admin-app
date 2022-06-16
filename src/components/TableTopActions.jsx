@@ -19,6 +19,7 @@ export function TableTopActions() {
         placeholder="Search by name, email or role..."
       />
       <button
+        className="btn-delete"
         disabled={getDeleteButtonStatus(state)}
         onClick={() => {
           if (searchText) dispatch({ type: "DELETE_BULK_SEARCH" });

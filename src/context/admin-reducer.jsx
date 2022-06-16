@@ -16,7 +16,7 @@ export const adminReducer = (state, action) => {
       return {
         ...state,
         users: payload.map(d => ({ ...d, edit: false, isSelected: false })),
-        searchedUsers: state.users
+        searchedUsers: state.users,
       };
 
     case "SET_EDITABLE":
@@ -70,33 +70,38 @@ export const adminReducer = (state, action) => {
       };
 
     case "SELECT_BULK_ALL":
-      const start1 = state.indexOfFirst - 1,
-        end1 = state.indexOfLast - 1;
       return {
         ...state,
-        users: state.users.map((u, idx) => (idx >= start1 && idx <= end1 ? { ...u, isSelected: payload } : u)),
+        users: state.users.map((u, idx) =>
+          idx >= state.indexOfFirst - 1 && idx < state.indexOfLast ? { ...u, isSelected: payload } : u
+        ),
         searchedUsers: state.searchedUsers.map(u =>
           state.users.find(s => s.id === u.id) ? { ...u, isSelected: payload } : u
         ),
       };
 
     case "DELETE_BULK_ALL":
-      const start2 = state.indexOfFirst - 1,
-        end2 = state.indexOfLast - 1;
+      const selectedUsersCopy = state.users.slice(state.indexOfFirst - 1, state.indexOfLast);
       return {
         ...state,
-        users: state.users.filter((u, idx) => !(idx >= start2 && idx <= end2 && u.isSelected)),
+        users: state.users.filter(
+          (u, idx) => !(idx >= state.indexOfFirst - 1 && idx < state.indexOfLast && u.isSelected)
+        ),
+        searchedUsers: state.searchedUsers.filter(user =>
+          selectedUsersCopy.find(s => s.id === user.id && s.isSelected) ? false : true
+        ),
       };
 
     case "DELETE_BULK_SEARCH":
-      const start3 = state.indexOfFirst - 1,
-        end3 = state.indexOfLast - 1;
-      const searchResultsCopy = state.searchedUsers.slice(start3, end3 + 1);
-
+      const searchResultsCopy = state.searchedUsers.slice(state.indexOfFirst - 1, state.indexOfLast);
       return {
         ...state,
-        users: state.users.filter(user => (searchResultsCopy.find(s => s.id === user.id && s.isSelected) ? false : true)),
-        searchedUsers: state.searchedUsers.filter((u, idx) => !(idx >= start3 && idx <= end3 && u.isSelected)),
+        users: state.users.filter(user =>
+          searchResultsCopy.find(s => s.id === user.id && s.isSelected) ? false : true
+        ),
+        searchedUsers: state.searchedUsers.filter(
+          (u, idx) => !(idx >= state.indexOfFirst - 1 && idx < state.indexOfLast && u.isSelected)
+        ),
       };
     default:
       return state;

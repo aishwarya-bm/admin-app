@@ -5,6 +5,7 @@ import { ReadOnlyRow } from "./ReadOnlyRow";
 export function Table() {
   const { state, dispatch } = useAdmin();
 
+  console.log(state)
    let users = filterBySearch(state).slice(state.indexOfFirst - 1, state.indexOfLast);
   return (
     <section className="table-container">
