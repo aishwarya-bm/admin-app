@@ -30,6 +30,10 @@ th {
   vertical-align: middle;
 }
 
+td {
+  word-break: break-all;
+}
+
 tr {
   padding: 1rem;
 }
@@ -49,6 +53,7 @@ tr {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 2rem;
 }
 
 .pagination {
@@ -93,6 +98,15 @@ tr {
   cursor: pointer;
 }
 
-.btn-delete:disabled{
-   background: var(--primary-light);
+.btn-delete:disabled {
+  background: var(--primary-light);
+}
+
+@media only screen and (max-width: 600px) {
+  table {
+    margin: 0;
+  }
+  .actions-top input[type="text"] {
+    width: unset;
+  }
 }

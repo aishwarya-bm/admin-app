@@ -5,8 +5,7 @@ import { ReadOnlyRow } from "./ReadOnlyRow";
 export function Table() {
   const { state, dispatch } = useAdmin();
 
-  console.log(state)
-   let users = filterBySearch(state).slice(state.indexOfFirst - 1, state.indexOfLast);
+  let users = filterBySearch(state).slice(state.indexOfFirst - 1, state.indexOfLast);
   return (
     <section className="table-container">
       <table>
@@ -32,7 +31,7 @@ export function Table() {
           {users &&
             users?.map((user, idx) => {
               return (
-                <tr key={idx} className={user.isSelected && "row-selected"} >
+                <tr key={idx} className={user.isSelected && "row-selected"}>
                   <td>
                     <input
                       type="checkbox"
