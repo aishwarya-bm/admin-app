@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAdmin } from "../context/admin-context";
-import { getDeleteButtonStatus, setIndexes } from "../utils/admin-util";
+import { getDeleteButtonStatus, onClearSearch, onDeleteBulk, onSearchChange, setIndexes } from "../utils/admin-util";
 
 export function TableTopActions() {
   const { state, dispatch } = useAdmin();
@@ -8,23 +8,25 @@ export function TableTopActions() {
   useEffect(() => {
     if (searchText) setIndexes(state, dispatch);
   }, [searchText]);
+
   return (
     <section className="actions-top">
       <input
         type="text"
         value={state.searchText}
-        onChange={e => {
-          dispatch({ type: "SET_SEARCH", payload: e.target.value });
-        }}
+        onChange={e => onSearchChange(e, state, dispatch)}
         placeholder="Search by name, email or role..."
       />
       <button
+        onClick={() => {
+          if (searchText) onClearSearch(state, dispatch);
+        }}>
+        clear
+      </button>
+      <button
         className="btn-delete"
         disabled={getDeleteButtonStatus(state)}
-        onClick={() => {
-          if (searchText) dispatch({ type: "DELETE_BULK_SEARCH" });
-          else dispatch({ type: "DELETE_BULK_ALL" });
-        }}>
+        onClick={() => onDeleteBulk(state, dispatch)}>
         Delete selected
       </button>
     </section>

@@ -32,4 +32,21 @@ const filterBySearch = state => {
       );
 };
 
-export { filterBySearch, getAllSelected, getDeleteButtonStatus, setIndexes };
+ const onSearchChange = (e, state, dispatch) => {
+   dispatch({ type: "SET_SEARCH", payload: e.target.value });
+   const lastIndex = state.users.length >= ROWS_PER_PAGE ? ROWS_PER_PAGE : state.users.length % ROWS_PER_PAGE;
+   dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex: 1, lastIndex } });
+ };
+
+ const onClearSearch = (state, dispatch) => {
+   dispatch({ type: "SET_SEARCH", payload: "" });
+   const lastIndex = state.users.length >= ROWS_PER_PAGE ? ROWS_PER_PAGE : state.users.length % ROWS_PER_PAGE;
+   dispatch({ type: "SET_CURRENTPAGE", payload: { number: 1, firstIndex: 1, lastIndex } });
+ };
+
+ const onDeleteBulk = (state, dispatch) => {
+   if (state.searchText) dispatch({ type: "DELETE_BULK_SEARCH" });
+   else dispatch({ type: "DELETE_BULK_ALL" });
+ };
+
+export { filterBySearch, getAllSelected, getDeleteButtonStatus, setIndexes,onSearchChange,onClearSearch,onDeleteBulk };
